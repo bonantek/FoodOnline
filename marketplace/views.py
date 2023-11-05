@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, HttpResponse
 from menu.models import Category, FoodItem
+from django.http import JsonResponse
 
 from vendor.models import Vendor
 from django.db.models import Prefetch
@@ -25,10 +26,18 @@ def vendor_detail(request, vendor_slug):
         )
     )
 
-
     context = {
         'vendor': vendor,
         'categories': categories,
     }
     return render(request, 'marketplace/vendor_detail.html', context)
 
+
+def add_to_cart(request, food_id = None):
+    if request.user.is_authenticated:
+        if request.is_ajax():
+            pass
+
+        # return JsonResponse({'status':'Success', 'message': 'User is logged in'})
+    else:
+        return JsonResponse({'status':'Failed', 'message': 'Please log in to continue'})
